@@ -83,6 +83,8 @@ public class HistoryActivity extends AppCompatActivity implements HistoryMainCon
 //        historyPresenter.getHistory(currClick, dateformat.format(today));
 //        historyPresenter.getHistory(currClick, dateformat.format(yesterday));
         System.out.println("FORMAT OF THE DATE ____________---------------- " + dateformat.format(yesterday));
+        historyPresenter.getHistory(currClick, dateformat.format(today));
+        historyPresenter.getHistory(currClick, dateformat.format(yesterday));
         historyPresenter.getHistory(currClick, dateformat.format(datebeforeyesterday));
 
         //Загрузка данных на позавчера
@@ -109,7 +111,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryMainCon
         gridLabel.setHorizontalAxisTitle("Дати");
         StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
         DateFormat dateformat1 = new SimpleDateFormat("dd.MM");
-        graph.setBackgroundColor(Color.argb(100, 0, 0, 10));
+        graph.setBackgroundColor(Color.argb(100, 10, 10, 10));
 
     //        staticLabelsFormatter.setHorizontalLabels(new String[] {
     //                dateformat1.format(datebeforeyesterday),

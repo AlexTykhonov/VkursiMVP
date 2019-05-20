@@ -14,6 +14,8 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class HistoryModel implements HistoryMainContract.Model {
@@ -21,10 +23,15 @@ public class HistoryModel implements HistoryMainContract.Model {
     Date today = new Date();
     Date yesterday;
     Date datebeforeyesterday;
+    ArrayList<PojoVal> mArrayList;
 
     HistoryMainContract.APIListener apiListener;
 
     NbuInterface nbuInterface = RetrofitClient.callRetrofit().create(NbuInterface.class);
+
+    public HistoryModel(HistoryPresenter historyPresenter) {
+        this.apiListener = historyPresenter;
+    }
 
     // 3 dates
     public void calendar() {
@@ -40,19 +47,15 @@ public class HistoryModel implements HistoryMainContract.Model {
         }
 
     @Override
-    public ArrayList<PojoVal> getHistory(String s1, String s2) {
-        return null;
-    }
+    public void getHistory (String valcode, String date) {
+         nbuInterface.getHistory(valcode,date,"json")
+                .subscribeOn(Schedulers.computation())
+               .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(throwable -> System.out.println("Throwable " + throwable.getMessage()))
+               // .subscribe(data-> System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+data)); //del later
+               .subscribe(apiListener::onSuccess, apiListener::onFailure);
 
-//    @Override
-//    public Observable<ArrayList<PojoVal>> getHistory (String valcode, String date) {
-//        return (Observable<ArrayList<PojoVal>>) nbuInterface.getHistory(valcode,date,"json")
-//                .subscribeOn(Schedulers.computation())
-//               .observeOn(AndroidSchedulers.mainThread())
-//                .doOnError(throwable -> System.out.println("Throwable " + throwable.getMessage()))
-//                .subscribe(data-> System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+data)); //del later
-//               .subscribe(apiListener::onSuccess, apiListener::onFailure);
-  //  }
+    }
 
 
 

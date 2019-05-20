@@ -8,14 +8,11 @@ import com.tae.vkursimvp.listcurrency.ListCurrencyContract;
 
 import java.util.ArrayList;
 
-import io.reactivex.Observable;
-import retrofit2.Call;
-
 public interface HistoryMainContract {
 
     interface Model {
-       // Observable<ArrayList<PojoVal>> getHistory (String s1, String s2);
-        ArrayList<PojoVal> getHistory (String s1, String s2);
+        void getHistory (String s1, String s2);
+//        ArrayList<PojoVal> getHistory (String s1, String s2);
     }
 
     interface View {
@@ -25,7 +22,6 @@ public interface HistoryMainContract {
     }
 
     interface Presenter {
-
     }
 
     interface APIListener {

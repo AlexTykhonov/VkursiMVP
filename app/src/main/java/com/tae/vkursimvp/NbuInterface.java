@@ -13,7 +13,7 @@ public interface NbuInterface {
         Observable<ArrayList<PojoVal>> getNbuData();
 
         @GET("exchange?")
-      //  Observable<ArrayList<PojoVal>> getHistory(@Query("valcode") String curr, @Query("date") String date, @Query("json") String json);
-        Call<ArrayList<PojoVal>> getHistory(@Query("valcode") String curr, @Query("date") String date, @Query("json") String json);
+        Observable<ArrayList<PojoVal>> getHistory(@Query("valcode") String curr, @Query("date") String date, @Query("json") String json);
+//        Call<ArrayList<PojoVal>> getHistory(@Query("valcode") String curr, @Query("date") String date, @Query("json") String json);
     }
 

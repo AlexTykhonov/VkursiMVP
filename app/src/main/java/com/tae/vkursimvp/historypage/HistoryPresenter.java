@@ -15,7 +15,8 @@ HistoryMainContract.Model historyModel;
 
     public HistoryPresenter(HistoryMainContract.View view) {
         mView = view;
-        historyModel = new HistoryModel();
+        historyModel = new HistoryModel(this);
+
     }
 
     void getHistory (String valcode, String date) {
@@ -24,6 +25,7 @@ HistoryMainContract.Model historyModel;
 
     @Override
     public void onSuccess(ArrayList<PojoVal> pojoNbu) {
+
         mView.handleResults(pojoNbu);
     }
 
