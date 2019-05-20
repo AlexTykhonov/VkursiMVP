@@ -49,8 +49,8 @@ public class HistoryActivity extends AppCompatActivity implements HistoryMainCon
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
-
         Bundle bundle = getIntent().getExtras();
+
         retrofit= retrofitClient.callRetrofit();//
         NbuInterface nbuInterface = retrofit.create(NbuInterface.class);//
 
@@ -83,10 +83,12 @@ public class HistoryActivity extends AppCompatActivity implements HistoryMainCon
 //        historyPresenter.getHistory(currClick, dateformat.format(today));
 //        historyPresenter.getHistory(currClick, dateformat.format(yesterday));
         System.out.println("FORMAT OF THE DATE ____________---------------- " + dateformat.format(yesterday));
-        historyPresenter.getHistory(currClick, dateformat.format(today));
-        historyPresenter.getHistory(currClick, dateformat.format(yesterday));
-        historyPresenter.getHistory(currClick, dateformat.format(datebeforeyesterday));
 
+//        historyPresenter.getHistory(currClick, dateformat.format(today));
+//        historyPresenter.getHistory(currClick, dateformat.format(yesterday));
+//        historyPresenter.getHistory(currClick, dateformat.format(datebeforeyesterday));
+
+historyPresenter.calendar(10, currClick);
         //Загрузка данных на позавчера
 //        nbuInterface.getHistory(currClick, dateformat.format(datebeforeyesterday),"json").subscribeOn(Schedulers.computation())
 //                .observeOn(AndroidSchedulers.mainThread())
@@ -106,7 +108,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryMainCon
     }
 
     public void createGraphView (DataPoint dataPoint) {
-        series.appendData(dataPoint, false, 3);
+        series.appendData(dataPoint, false, 11);
         GridLabelRenderer gridLabel = graph.getGridLabelRenderer();
         gridLabel.setHorizontalAxisTitle("Дати");
         StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);

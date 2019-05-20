@@ -27,6 +27,7 @@ HistoryMainContract.Model historyModel;
     public void onSuccess(ArrayList<PojoVal> pojoNbu) {
 
         mView.handleResults(pojoNbu);
+        System.out.println("ON SUCCESS");
     }
 
     @Override
@@ -36,5 +37,10 @@ HistoryMainContract.Model historyModel;
     @Override
     public void onFailure(Throwable t) {
 
+    }
+
+    @Override
+    public void calendar(int period, String val) {
+        historyModel.calendar(period, val);
     }
 }

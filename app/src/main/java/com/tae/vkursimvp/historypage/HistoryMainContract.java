@@ -12,7 +12,7 @@ public interface HistoryMainContract {
 
     interface Model {
         void getHistory (String s1, String s2);
-//        ArrayList<PojoVal> getHistory (String s1, String s2);
+        void calendar(int period, String valcode);
     }
 
     interface View {
@@ -22,6 +22,7 @@ public interface HistoryMainContract {
     }
 
     interface Presenter {
+        void calendar (int period, String val);
     }
 
     interface APIListener {
