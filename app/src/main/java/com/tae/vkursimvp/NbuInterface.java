@@ -3,6 +3,7 @@ package com.tae.vkursimvp;
 import java.util.ArrayList;
 
 import io.reactivex.Observable;
+import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
@@ -12,6 +13,7 @@ public interface NbuInterface {
         Observable<ArrayList<PojoVal>> getNbuData();
 
         @GET("exchange?")
-        Observable<ArrayList<PojoVal>> getHistory(@Query("valcode") String curr, @Query("date") String date, @Query("json") String json);
+      //  Observable<ArrayList<PojoVal>> getHistory(@Query("valcode") String curr, @Query("date") String date, @Query("json") String json);
+        Call<ArrayList<PojoVal>> getHistory(@Query("valcode") String curr, @Query("date") String date, @Query("json") String json);
     }
 

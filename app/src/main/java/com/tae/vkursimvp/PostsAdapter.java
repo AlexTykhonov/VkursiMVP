@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.tae.vkursimvp.historypage.HistoryActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,10 +57,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             @Override
             public void onClick(View view) {
 
-             //   Toast.makeText(context, post.getRate().toString(), Toast.LENGTH_SHORT).show();
-               // Intent intent = new Intent(context, HistoryActivity.class);
-             //   intent.putExtra("Parcel", post);
-             //   context.startActivity(intent);
+                Toast.makeText(context, post.getRate().toString(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, HistoryActivity.class);
+                intent.putExtra("Parcel", post);
+                context.startActivity(intent);
             }
         });
     }

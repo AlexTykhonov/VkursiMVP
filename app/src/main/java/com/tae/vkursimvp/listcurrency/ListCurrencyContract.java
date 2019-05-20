@@ -16,9 +16,11 @@ public interface ListCurrencyContract {
     }
 
     interface View {
+        void displayCurrency (ArrayList<PojoVal> pojoNbu);
     }
 
     interface Presenter {
+
     }
 
     interface APIListener {
