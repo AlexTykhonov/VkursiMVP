@@ -3,6 +3,7 @@ package com.tae.vkursimvp.historypage;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
@@ -41,7 +42,8 @@ public class HistoryActivity extends AppCompatActivity implements HistoryMainCon
     GraphView graph;
     DataPoint[] dataPoints = new DataPoint[3];
     LineGraphSeries<DataPoint> series;
-
+    StaticLabelsFormatter staticLabelsFormatter;
+    SeekBar seekBar;
     //new
     ArrayList <Date> datesArray;
 
@@ -65,9 +67,29 @@ public class HistoryActivity extends AppCompatActivity implements HistoryMainCon
         DateFormat dateformat = new SimpleDateFormat("yyyyMMdd");//
         System.out.println(dateformat.format(today));//
 
+        seekBar=findViewById(R.id.seekBar);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                graph.removeAllSeries();
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
         series = new LineGraphSeries<DataPoint>();
         graph = (GraphView) findViewById(R.id.graph);
         graph.addSeries(series);
+        staticLabelsFormatter= new StaticLabelsFormatter(graph);
 
         // dates~~~~~~~~~
         Calendar calendar = Calendar.getInstance();//
@@ -84,41 +106,27 @@ public class HistoryActivity extends AppCompatActivity implements HistoryMainCon
 //        historyPresenter.getHistory(currClick, dateformat.format(yesterday));
         System.out.println("FORMAT OF THE DATE ____________---------------- " + dateformat.format(yesterday));
 
-//        historyPresenter.getHistory(currClick, dateformat.format(today));
-//        historyPresenter.getHistory(currClick, dateformat.format(yesterday));
-//        historyPresenter.getHistory(currClick, dateformat.format(datebeforeyesterday));
 
 historyPresenter.calendar(10, currClick);
-        //Загрузка данных на позавчера
-//        nbuInterface.getHistory(currClick, dateformat.format(datebeforeyesterday),"json").subscribeOn(Schedulers.computation())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(this::handleResults, this::handleError);
-//
-//        //Загрузка данных на вчера
-//        nbuInterface.getHistory(currClick, dateformat.format(yesterday),"json").subscribeOn(Schedulers.computation())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(this::handleResults, this::handleError);
-//
-//        //Загрузка данных на сегодня
-//        nbuInterface.getHistory(currClick,dateformat.format(today),"json").subscribeOn(Schedulers.computation())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(this::handleResults, this::handleError);
-//
-//        Toast.makeText(this,pojoParcel.getCc()+ " - this is the currency rate",Toast.LENGTH_LONG).show();
+             Toast.makeText(this,pojoParcel.getCc()+ " - this is the currency rate",Toast.LENGTH_LONG).show();
     }
 
     public void createGraphView (DataPoint dataPoint) {
         series.appendData(dataPoint, false, 11);
         GridLabelRenderer gridLabel = graph.getGridLabelRenderer();
         gridLabel.setHorizontalAxisTitle("Дати");
-        StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
+        // StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
         DateFormat dateformat1 = new SimpleDateFormat("dd.MM");
-        graph.setBackgroundColor(Color.argb(100, 10, 10, 10));
+        graph.setBackgroundColor(Color.argb(0, 10, 10, 10));
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add(dateformat1.format(yesterday));
 
-    //        staticLabelsFormatter.setHorizontalLabels(new String[] {
-    //                dateformat1.format(datebeforeyesterday),
-    //                dateformat1.format(yesterday),
-    //                dateformat1.format(today)});
+         staticLabelsFormatter.setHorizontalLabels((String[]) arrayList.toArray());
+            staticLabelsFormatter.setHorizontalLabels(new String[] {
+                    dateformat1.format(datebeforeyesterday),
+                    dateformat1.format(yesterday),
+                    dateformat1.format(today)});
+
         graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
     }
 

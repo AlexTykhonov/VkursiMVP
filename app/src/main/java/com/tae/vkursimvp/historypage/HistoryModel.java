@@ -8,6 +8,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -18,7 +19,7 @@ public class HistoryModel implements HistoryMainContract.Model {
     Date yesterday;
     Date datebeforeyesterday;
     ArrayList<PojoVal> mArrayList;
-
+    ArrayList<String> labelString = new ArrayList();
     HistoryMainContract.APIListener apiListener;
     NbuInterface nbuInterface = RetrofitClient.callRetrofit().create(NbuInterface.class);
 
@@ -26,24 +27,23 @@ public class HistoryModel implements HistoryMainContract.Model {
         this.apiListener = historyPresenter;
         calendar(10, "840");
     }
-
-    // 3 dates
     public void calendar(int period, String valcode) {
         DateFormat dateformat = new SimpleDateFormat("yyyyMMdd");//
+        DateFormat labelFormat1 = new SimpleDateFormat("dd.MM");//
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(today);
+        // first element of x-axis label
+        labelString.clear();
+        labelString.add(labelFormat1.format(today));
 
         for (int i=0;i<=period;i++) {
             calendar.add(Calendar.DATE, -1);
+            labelString.add(labelFormat1.format(calendar.getTime()));
             System.out.println(calendar.getTime()+"+DATA++++++++++++++++++++++++");
             getHistory(valcode,dateformat.format(calendar.getTime()));
         }
-        calendar.add(Calendar.DATE, -1);
-        yesterday = calendar.getTime();
-        System.out.println(dateformat.format(yesterday) + "THIS IS YESTERDAY ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        calendar.add(Calendar.DATE, -1);
-        datebeforeyesterday = calendar.getTime();
-        System.out.println(dateformat.format(datebeforeyesterday) + "THIS IS DATE BEFORE YESTERDAY ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        Collections.reverse(labelString);
+        System.out.println("????"+ labelString+ "======================== LABEL STRING =======================");
         }
 
     @Override
@@ -53,10 +53,6 @@ public class HistoryModel implements HistoryMainContract.Model {
                .observeOn(AndroidSchedulers.mainThread())
                 .doOnError(throwable -> System.out.println("Throwable " + throwable.getMessage()))
                .subscribe(apiListener::onSuccess, apiListener::onFailure);
-
     }
-
-
-
 }
 
