@@ -16,13 +16,11 @@ import com.tae.vkursimvp.PojoVal;
 import com.tae.vkursimvp.R;
 import com.tae.vkursimvp.RetrofitClient;
 import com.tae.vkursimvp.listcurrency.MainPresenter;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
@@ -40,7 +38,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryMainCon
     Date datebeforeyesterday;//
     ArrayList<PojoVal> pojoVals = new ArrayList<PojoVal>();
     GraphView graph;
-    DataPoint[] dataPoints = new DataPoint[3];
+    DataPoint[] dataPoints = new DataPoint[12];
     LineGraphSeries<DataPoint> series;
     StaticLabelsFormatter staticLabelsFormatter;
     SeekBar seekBar;
@@ -67,11 +65,29 @@ public class HistoryActivity extends AppCompatActivity implements HistoryMainCon
         DateFormat dateformat = new SimpleDateFormat("yyyyMMdd");//
         System.out.println(dateformat.format(today));//
 
+
+
+        series = new LineGraphSeries<DataPoint>();
+        graph = (GraphView) findViewById(R.id.graph);
+        graph.addSeries(series);
+        staticLabelsFormatter= new StaticLabelsFormatter(graph);
+        // dates~~~~~~~~~
+        Calendar calendar = Calendar.getInstance();//
+        calendar.setTime(today);//
+        calendar.add(Calendar.DATE, -1);//
+        yesterday= calendar.getTime();//
+        System.out.println(dateformat.format(yesterday)+ "THIS IS YESTERDAY ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");//
+        calendar.add(Calendar.DATE, -1);//
+        datebeforeyesterday= calendar.getTime();//
+        System.out.println(dateformat.format(datebeforeyesterday)+ "THIS IS DATE BEFORE YESTERDAY ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");//
+
+        HistoryPresenter historyPresenter = new HistoryPresenter(this);
         seekBar=findViewById(R.id.seekBar);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                graph.removeAllSeries();
+              //  graph.removeAllSeries();
+                historyPresenter.calendar(10, currClick);
 
             }
 
@@ -86,28 +102,14 @@ public class HistoryActivity extends AppCompatActivity implements HistoryMainCon
             }
         });
 
-        series = new LineGraphSeries<DataPoint>();
-        graph = (GraphView) findViewById(R.id.graph);
-        graph.addSeries(series);
-        staticLabelsFormatter= new StaticLabelsFormatter(graph);
 
-        // dates~~~~~~~~~
-        Calendar calendar = Calendar.getInstance();//
-        calendar.setTime(today);//
-        calendar.add(Calendar.DATE, -1);//
-        yesterday= calendar.getTime();//
-        System.out.println(dateformat.format(yesterday)+ "THIS IS YESTERDAY ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");//
-        calendar.add(Calendar.DATE, -1);//
-        datebeforeyesterday= calendar.getTime();//
-        System.out.println(dateformat.format(datebeforeyesterday)+ "THIS IS DATE BEFORE YESTERDAY ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");//
 
-        HistoryPresenter historyPresenter = new HistoryPresenter(this);
 //        historyPresenter.getHistory(currClick, dateformat.format(today));
 //        historyPresenter.getHistory(currClick, dateformat.format(yesterday));
         System.out.println("FORMAT OF THE DATE ____________---------------- " + dateformat.format(yesterday));
 
 
-historyPresenter.calendar(10, currClick);
+//historyPresenter.calendar(10, currClick);
              Toast.makeText(this,pojoParcel.getCc()+ " - this is the currency rate",Toast.LENGTH_LONG).show();
     }
 
@@ -149,3 +151,4 @@ historyPresenter.calendar(10, currClick);
         System.out.println(t+"!!!!!!!!!!!!!!!  ERROR  !!!!!!!!!!!!!!");
     }
 }
+// новый графвью, сикбар - увеличиает колво точек и график должен перерисовываться
